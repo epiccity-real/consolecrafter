@@ -20,6 +20,7 @@
             position: relative;
         }
 
+        /* NEUER DYNAMISCHER HINTERGRUNDEFFEKT: CRT-Scanlines */
         body::after {
             content: '';
             position: fixed;
@@ -29,6 +30,18 @@
             height: 100%;
             background: rgba(0, 0, 0, 0.7);
             z-index: -1;
+            /* Glitch- und Scanline-Effekt-Kombination */
+            background-image: 
+                linear-gradient(to bottom, transparent 50%, rgba(0,0,0,.5) 50%),
+                linear-gradient(to right, rgba(255, 51, 51, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 100% 2px, 20px 100%, 100% 20px;
+            animation: scanline 8s linear infinite;
+        }
+
+        @keyframes scanline {
+            from { background-position: 0 0, 0 0, 0 0; }
+            to { background-position: 0 100%, 100% 0, 0 100%; }
         }
 
         .enter-screen {
@@ -196,12 +209,25 @@
             transition: all 0.2s ease;
             text-decoration: none;
         }
-
+        
+        /* NEUES FEATURE: Glitch- und Pulse-Animation für Social Icons */
         .social-icon:hover {
             background: rgba(50, 50, 50, 0.9);
             border-color: #ff3333;
             transform: translateY(-2px);
             box-shadow: 0 0 10px #ff3333, 0 0 20px #ff3333;
+            animation: social-glitch 0.5s linear infinite, social-pulse 1s ease-in-out infinite alternate;
+        }
+        
+        @keyframes social-glitch {
+            0% { text-shadow: 1px 0 #ff3333, -1px 0 #00ffff; transform: translate(1px, -1px); }
+            50% { text-shadow: -1px 0 #ff3333, 1px 0 #00ffff; transform: translate(-1px, 1px); }
+            100% { text-shadow: 1px 0 #ff3333, -1px 0 #00ffff; transform: translate(1px, -1px); }
+        }
+        
+        @keyframes social-pulse {
+            from { box-shadow: 0 0 10px #ff3333, 0 0 20px #ff3333; }
+            to { box-shadow: 0 0 5px #ff3333, 0 0 40px #ff3333; }
         }
 
         .social-icon svg {
@@ -262,6 +288,30 @@
                 opacity: 0;
             }
         }
+
+        /* NEUES FEATURE: Maus-Tracking-Effekt Partikel */
+        .mouse-particle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background-color: #ff3333;
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0;
+            animation: fade-out-particle 0.8s forwards;
+            box-shadow: 0 0 5px #ff3333, 0 0 10px #ff3333;
+        }
+        
+        @keyframes fade-out-particle {
+            0% {
+                transform: scale(1);
+                opacity: 0.8;
+            }
+            100% {
+                transform: scale(0.2);
+                opacity: 0;
+            }
+        }
     </style>
 </head>
 <body>
@@ -317,14 +367,13 @@
         <source src="xD.mp3" type="audio/mpeg">
     </audio>
 
-    <script src="https://unpkg.com/cursor-effects@1.0.17/dist/browser.js"></script>
-    <script src="mittelfinger.js"></script>
     <script>
         const enterScreen = document.getElementById('enterScreen');
         const mainContent = document.getElementById('mainContent');
         const backgroundMusic = document.getElementById('backgroundMusic');
         const volumeSlider = document.getElementById('volumeSlider');
         const volumeIcon = document.getElementById('volumeIcon');
+        const body = document.body;
 
         // Enter screen functionality
         enterScreen.addEventListener('click', () => {
@@ -367,7 +416,6 @@
             }
         }
 
-        // Set initial volume
         backgroundMusic.volume = 0.5;
 
         // Create floating particles
@@ -384,16 +432,26 @@
             }, 20000);
         }
 
-        // Create particles periodically
         setInterval(createParticle, 300);
 
-        // Create initial particles
         for (let i = 0; i < 20; i++) {
             setTimeout(createParticle, i * 100);
         }
 
+        // NEUES FEATURE: Maus-Tracking-Effekt-Funktion
+        body.addEventListener('mousemove', (e) => {
+            const mouseParticle = document.createElement('div');
+            mouseParticle.className = 'mouse-particle';
+            mouseParticle.style.left = e.clientX + 'px';
+            mouseParticle.style.top = e.clientY + 'px';
+            body.appendChild(mouseParticle);
+            
+            setTimeout(() => {
+                mouseParticle.remove();
+            }, 800); // Entspricht der Animationsdauer, damit sie verschwinden
+        });
+
         /* * Hey, ConsoleCrafter. Du hast es gefunden!
-         * Das hier ist nur für deine Augen, Linus.
          * Ein guter Entwickler weiß, dass die besten Dinge oft gut versteckt sind.
          * Viel Spaß beim Craften!
          */
