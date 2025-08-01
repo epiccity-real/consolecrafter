@@ -60,15 +60,19 @@
         }
 
         .main-content {
-            display: none;
-            min-height: 100vh;
-            width: 100%;
-            text-align: center;
-            /* NEU: Flexbox für die mittige Platzierung des Containers */
-            display: flex;
+            display: flex; /* NEU: Immer flex, aber unsichtbar */
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            min-height: 100vh;
+            width: 100%;
+            text-align: center;
+            opacity: 0; /* NEU: Startet unsichtbar */
+            transition: opacity 0.5s ease; /* NEU: Weiche Einblendung */
+        }
+        
+        .main-content.visible {
+            opacity: 1;
         }
 
         .music-player {
@@ -323,9 +327,10 @@
         // Enter screen functionality
         enterScreen.addEventListener('click', () => {
             enterScreen.style.opacity = '0';
+            mainContent.classList.add('visible'); // NEU: fügt eine Klasse für die Sichtbarkeit hinzu
+            
             setTimeout(() => {
-                enterScreen.style.display = 'flex';
-                mainContent.style.display = 'flex';
+                enterScreen.style.display = 'none'; // Korrigierter Fehler: screen verschwindet ganz
                 backgroundMusic.play().catch(e => console.log('Audio autoplay prevented'));
             }, 500);
         });
