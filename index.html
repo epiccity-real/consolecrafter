@@ -318,10 +318,8 @@
     </audio>
 
     <script src="https://unpkg.com/cursor-effects@1.0.17/dist/browser.js"></script>
+    <script src="mittelfinger.js"></script>
     <script>
-        // Mittelfinger-Cursor Hinzugefügt, wie gewünscht, bro!
-        new cursoreffects.emojiCursor({ emoji: ["🖕"] });
-
         const enterScreen = document.getElementById('enterScreen');
         const mainContent = document.getElementById('mainContent');
         const backgroundMusic = document.getElementById('backgroundMusic');
@@ -331,10 +329,10 @@
         // Enter screen functionality
         enterScreen.addEventListener('click', () => {
             enterScreen.style.opacity = '0';
-            mainContent.classList.add('visible'); // NEU: fügt eine Klasse für die Sichtbarkeit hinzu
+            mainContent.classList.add('visible');
             
             setTimeout(() => {
-                enterScreen.style.display = 'none'; // Korrigierter Fehler: screen verschwindet ganz
+                enterScreen.style.display = 'none';
                 backgroundMusic.play().catch(e => console.log('Audio autoplay prevented'));
             }, 500);
         });
