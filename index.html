@@ -23,7 +23,6 @@
             position: relative;
         }
 
-        /* NEUER DYNAMISCHER HINTERGRUNDEFFEKT: CRT-Scanlines */
         body::after {
             content: '';
             position: fixed;
@@ -33,7 +32,6 @@
             height: 100%;
             background: rgba(0, 0, 0, 0.7);
             z-index: -1;
-            /* Glitch- und Scanline-Effekt-Kombination */
             background-image: 
                 linear-gradient(to bottom, transparent 50%, rgba(0,0,0,.5) 50%),
                 linear-gradient(to right, rgba(255, 51, 51, 0.05) 1px, transparent 1px),
@@ -47,7 +45,6 @@
             to { background-position: 0 100%, 100% 0, 0 100%; }
         }
         
-        /* NEUES FEATURE: Glitch für die ganze Seite */
         .glitch-active {
             animation: full-glitch 0.2s linear infinite;
         }
@@ -190,11 +187,24 @@
         .profile-name:hover {
             animation: glitch 0.5s linear infinite;
         }
+        
+        /* NEUES FEATURE: Zitter-Effekt bei Hover */
+        .profile-name.shake {
+            animation: shake 0.1s linear infinite;
+        }
 
         @keyframes glitch {
             0% { text-shadow: 1px 0 #ff3333, -1px 0 #00ffff; }
             50% { text-shadow: -1px 0 #ff3333, 1px 0 #00ffff; }
             100% { text-shadow: 1px 0 #ff3333, -1px 0 #00ffff; }
+        }
+
+        @keyframes shake {
+            0% { transform: translate(0, 0); }
+            25% { transform: translate(1px, -1px); }
+            50% { transform: translate(-1px, 1px); }
+            75% { transform: translate(1px, 1px); }
+            100% { transform: translate(-1px, -1px); }
         }
 
         .profile-subtitle {
@@ -203,7 +213,6 @@
             opacity: 0.9;
         }
         
-        /* NEUES FEATURE: Typing Effekt für den Subtitle */
         .typing-effect {
             overflow: hidden;
             border-right: .15em solid #ff3333;
@@ -233,7 +242,7 @@
         }
 
         .social-icon {
-            position: relative; /* WICHTIG für ::before/::after */
+            position: relative;
             width: 50px;
             height: 50px;
             background: rgba(30, 30, 30, 0.8);
@@ -244,10 +253,9 @@
             justify-content: center;
             transition: all 0.2s ease;
             text-decoration: none;
-            overflow: hidden; /* WICHTIG für den Glitch-Effekt */
+            overflow: hidden;
         }
         
-        /* NEUES FEATURE: Glitch- und Pulse-Animation für Social Icons */
         .social-icon:hover {
             background: rgba(50, 50, 50, 0.9);
             border-color: #ff3333;
@@ -256,7 +264,6 @@
             animation: social-glitch 0.5s linear infinite, social-pulse 1s ease-in-out infinite alternate;
         }
         
-        /* NEUES FEATURE: Animierter Rahmen um Social Icons (::before/::after) */
         .social-icon::before, .social-icon::after {
             content: '';
             position: absolute;
@@ -358,7 +365,6 @@
             }
         }
 
-        /* NEUES FEATURE: Maus-Tracking-Effekt Partikel */
         .mouse-particle {
             position: absolute;
             width: 8px;
@@ -381,6 +387,25 @@
                 opacity: 0;
             }
         }
+
+        /* NEUES FEATURE: Hacking-Terminal-Log-Container */
+        .terminal-log {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 300px;
+            height: 150px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid #ff3333;
+            padding: 10px;
+            overflow: hidden;
+            font-size: 10px;
+            color: #00ff00; /* Grüner Text für den Hacker-Look */
+            pointer-events: none;
+            z-index: 99;
+            box-shadow: 0 0 10px #ff3333;
+        }
+
     </style>
 </head>
 <body>
@@ -434,6 +459,8 @@
         </div>
     </div>
 
+    <div class="terminal-log" id="terminalLog"></div>
+
     <audio id="backgroundMusic" loop>
         <source src="xD.mp3" type="audio/mpeg">
     </audio>
@@ -450,6 +477,7 @@
         const subtitleContent = "Gaming & Development";
         let subtitleIndex = 0;
 
+        // NEUES FEATURE: Typing Effekt für den Subtitle
         function typeWriter() {
             if (subtitleIndex < subtitleContent.length) {
                 subtitleText.innerHTML += subtitleContent.charAt(subtitleIndex);
@@ -466,7 +494,7 @@
             setTimeout(() => {
                 enterScreen.style.display = 'none';
                 backgroundMusic.play().catch(e => console.log('Audio autoplay prevented'));
-                typeWriter(); // NEUES FEATURE: Starte den Typing-Effekt
+                typeWriter();
             }, 500);
         });
 
@@ -522,7 +550,7 @@
             setTimeout(createParticle, i * 100);
         }
 
-        // NEUES FEATURE: Maus-Tracking-Effekt-Funktion
+        // Maus-Tracking-Effekt-Funktion
         body.addEventListener('mousemove', (e) => {
             const mouseParticle = document.createElement('div');
             mouseParticle.className = 'mouse-particle';
@@ -532,20 +560,50 @@
             
             setTimeout(() => {
                 mouseParticle.remove();
-            }, 800); // Entspricht der Animationsdauer, damit sie verschwinden
+            }, 800);
         });
         
-        // NEUES FEATURE: Interaktiver Glitch-Effekt beim Klick auf den Namen
+        // Interaktiver Glitch-Effekt beim Klick auf den Namen
         profileName.addEventListener('click', () => {
             body.classList.add('glitch-active');
             setTimeout(() => {
                 body.classList.remove('glitch-active');
             }, 500);
         });
+        
+        // NEUES FEATURE: Hacking-Terminal-Log-Funktion
+        const terminalLog = document.getElementById('terminalLog');
+        const logEntries = [
+            'INIT: Loading core modules...',
+            'PROCESS: Fetching remote data from 192.168.1.1',
+            'SUCCESS: Connection established.',
+            'DEBUG: Scanning for vulnerabilities...',
+            'WARNING: Port 8080 is open.',
+            'INFO: Processing user input...',
+            'STATUS: System is online.',
+            'COMMAND: cd /consolecrafter',
+            'FILE: index.html loaded.',
+            'CMD: ls -la',
+            'SUCCESS: Render complete.'
+        ];
+        
+        function addLogEntry() {
+            const newEntry = document.createElement('div');
+            const randomEntry = logEntries[Math.floor(Math.random() * logEntries.length)];
+            newEntry.textContent = `> ${randomEntry}`;
+            terminalLog.appendChild(newEntry);
+            terminalLog.scrollTop = terminalLog.scrollHeight; // Scrollt automatisch nach unten
+            
+            if (terminalLog.children.length > 10) {
+                terminalLog.removeChild(terminalLog.children[0]);
+            }
+        }
+        
+        setInterval(addLogEntry, 1000);
 
         /* * Hey, ConsoleCrafter. Du hast es gefunden!
-         * Ich habe noch eine Überraschung für dich, Linus.
-         * Der echte Code für den Glitch-Effekt liegt in der Konsole.
+         * Das hier ist nur für deine Augen, Linus.
+         * Ein guter Entwickler weiß, dass die besten Dinge oft gut versteckt sind.
          * Viel Spaß beim Hacken!
          */
         
