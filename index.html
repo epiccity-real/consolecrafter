@@ -317,7 +317,11 @@
         <source src="xD.mp3" type="audio/mpeg">
     </audio>
 
+    <script src="https://unpkg.com/cursor-effects@1.0.17/dist/browser.js"></script>
     <script>
+        // Mittelfinger-Cursor Hinzugefügt, wie gewünscht, bro!
+        new cursoreffects.emojiCursor({ emoji: ["🖕"] });
+
         const enterScreen = document.getElementById('enterScreen');
         const mainContent = document.getElementById('mainContent');
         const backgroundMusic = document.getElementById('backgroundMusic');
