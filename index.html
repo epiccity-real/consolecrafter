@@ -18,10 +18,6 @@
             overflow-x: hidden;
             min-height: 100vh;
             position: relative;
-            /* Flexbox für mittige Platzierung */
-            display: flex;
-            justify-content: center;
-            align-items: center;
         }
 
         body::after {
@@ -65,11 +61,14 @@
 
         .main-content {
             display: none;
-            /* Flexbox für mittige Platzierung entfernt */
-            /* padding: 20px; */
-            min-height: 100vh; /* Muss erhalten bleiben */
+            min-height: 100vh;
             width: 100%;
-            text-align: center; /* Text in der Mitte */
+            text-align: center;
+            /* NEU: Flexbox für die mittige Platzierung des Containers */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
 
         .music-player {
@@ -127,8 +126,6 @@
 
         .container {
             max-width: 500px;
-            /* Zentrierung durch Flexbox in Body */
-            margin: 0 auto;
             text-align: center;
         }
 
@@ -153,7 +150,7 @@
             font-size: 28px;
             font-weight: normal;
             color: #ff3333;
-            margin-bottom: 15px; /* Abstand vergrößert */
+            margin-bottom: 15px;
             letter-spacing: 1px;
             transition: text-shadow 0.1s ease-in-out;
             cursor: pointer;
@@ -271,15 +268,6 @@
     <div class="particles" id="particles"></div>
 
     <div class="main-content" id="mainContent">
-        <div class="music-player">
-            <div class="volume-control">
-                <svg class="volume-icon" id="volumeIcon" viewBox="0 0 24 24">
-                    <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
-                </svg>
-                <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="50">
-            </div>
-        </div>
-
         <div class="container">
             <div class="profile">
                 <div class="profile-image"></div>
@@ -312,6 +300,15 @@
         </div>
     </div>
 
+    <div class="music-player">
+        <div class="volume-control">
+            <svg class="volume-icon" id="volumeIcon" viewBox="0 0 24 24">
+                <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+            </svg>
+            <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="50">
+        </div>
+    </div>
+
     <audio id="backgroundMusic" loop>
         <source src="xD.mp3" type="audio/mpeg">
     </audio>
@@ -327,8 +324,8 @@
         enterScreen.addEventListener('click', () => {
             enterScreen.style.opacity = '0';
             setTimeout(() => {
-                enterScreen.style.display = 'none';
-                mainContent.style.display = 'block';
+                enterScreen.style.display = 'flex';
+                mainContent.style.display = 'flex';
                 backgroundMusic.play().catch(e => console.log('Audio autoplay prevented'));
             }, 500);
         });
