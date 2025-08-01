@@ -188,7 +188,6 @@
             animation: glitch 0.5s linear infinite;
         }
         
-        /* NEUES FEATURE: Zitter-Effekt bei Hover */
         .profile-name.shake {
             animation: shake 0.1s linear infinite;
         }
@@ -388,24 +387,30 @@
             }
         }
 
-        /* NEUES FEATURE: Hacking-Terminal-Log-Container */
-        .terminal-log {
+        /* NEUES FEATURE: Matrix Regen Effekt */
+        .matrix-code {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 300px;
-            height: 150px;
-            background: rgba(0, 0, 0, 0.7);
-            border: 1px solid #ff3333;
-            padding: 10px;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             overflow: hidden;
-            font-size: 10px;
-            color: #00ff00; /* Grüner Text für den Hacker-Look */
             pointer-events: none;
-            z-index: 99;
-            box-shadow: 0 0 10px #ff3333;
+            white-space: pre;
+            z-index: -2; /* hinter allen anderen Inhalten */
         }
-
+        .matrix-code span {
+            color: #00ff00;
+            font-size: 14px;
+            opacity: 0;
+            animation: matrix-fade 3s linear forwards;
+            position: absolute;
+        }
+        @keyframes matrix-fade {
+            0% { opacity: 1; transform: translateY(-50px); }
+            100% { opacity: 0; transform: translateY(100vh); }
+        }
+        
     </style>
 </head>
 <body>
@@ -414,6 +419,7 @@
     </div>
 
     <div class="particles" id="particles"></div>
+    <div class="matrix-code" id="matrixCode"></div>
 
     <div class="main-content" id="mainContent">
         <div class="container">
@@ -459,8 +465,6 @@
         </div>
     </div>
 
-    <div class="terminal-log" id="terminalLog"></div>
-
     <audio id="backgroundMusic" loop>
         <source src="xD.mp3" type="audio/mpeg">
     </audio>
@@ -477,7 +481,7 @@
         const subtitleContent = "Gaming & Development";
         let subtitleIndex = 0;
 
-        // NEUES FEATURE: Typing Effekt für den Subtitle
+        // Typing Effekt für den Subtitle
         function typeWriter() {
             if (subtitleIndex < subtitleContent.length) {
                 subtitleText.innerHTML += subtitleContent.charAt(subtitleIndex);
@@ -571,39 +575,47 @@
             }, 500);
         });
         
-        // NEUES FEATURE: Hacking-Terminal-Log-Funktion
-        const terminalLog = document.getElementById('terminalLog');
-        const logEntries = [
-            'INIT: Loading core modules...',
-            'PROCESS: Fetching remote data from 192.168.1.1',
-            'SUCCESS: Connection established.',
-            'DEBUG: Scanning for vulnerabilities...',
-            'WARNING: Port 8080 is open.',
-            'INFO: Processing user input...',
-            'STATUS: System is online.',
-            'COMMAND: cd /consolecrafter',
-            'FILE: index.html loaded.',
-            'CMD: ls -la',
-            'SUCCESS: Render complete.'
-        ];
-        
-        function addLogEntry() {
-            const newEntry = document.createElement('div');
-            const randomEntry = logEntries[Math.floor(Math.random() * logEntries.length)];
-            newEntry.textContent = `> ${randomEntry}`;
-            terminalLog.appendChild(newEntry);
-            terminalLog.scrollTop = terminalLog.scrollHeight; // Scrollt automatisch nach unten
-            
-            if (terminalLog.children.length > 10) {
-                terminalLog.removeChild(terminalLog.children[0]);
-            }
+        // NEUES FEATURE: Hacking-Terminal-Log ist raus. Matrix-Effekt kommt rein!
+        const matrixCodeContainer = document.getElementById('matrixCode');
+        const matrixChars = '0123456789ABCDEF!@#$%^&*()_+-=[]{}|;:",./<>?~`';
+
+        function createMatrixSymbol() {
+            const symbol = document.createElement('span');
+            symbol.textContent = matrixChars[Math.floor(Math.random() * matrixChars.length)];
+            symbol.style.left = Math.random() * window.innerWidth + 'px';
+            symbol.style.top = Math.random() * -100 + 'px';
+            symbol.style.animationDelay = Math.random() * 10 + 's';
+            symbol.style.animationDuration = (Math.random() * 5 + 5) + 's';
+            matrixCodeContainer.appendChild(symbol);
+
+            setTimeout(() => {
+                symbol.remove();
+            }, 10000);
         }
-        
-        setInterval(addLogEntry, 1000);
+
+        setInterval(createMatrixSymbol, 50);
+
+        // NEUES FEATURE: Subtiler Glitch-Effekt beim Hover über den Subtitle
+        subtitleText.addEventListener('mouseenter', () => {
+            const letters = subtitleContent.split('');
+            subtitleText.innerHTML = ''; // Leere den Text, um ihn neu aufzubauen
+            letters.forEach((letter, index) => {
+                const span = document.createElement('span');
+                span.textContent = letter;
+                span.style.transition = 'transform 0.1s ease';
+                span.addEventListener('mouseover', () => {
+                    span.style.transform = `translate(${Math.random() * 4 - 2}px, ${Math.random() * 4 - 2}px)`;
+                });
+                span.addEventListener('mouseout', () => {
+                    span.style.transform = 'translate(0, 0)';
+                });
+                subtitleText.appendChild(span);
+            });
+        });
 
         /* * Hey, ConsoleCrafter. Du hast es gefunden!
-         * Das hier ist nur für deine Augen, Linus.
-         * Ein guter Entwickler weiß, dass die besten Dinge oft gut versteckt sind.
+         * Ich habe noch eine Überraschung für dich, Linus.
+         * Der echte Code für den Glitch-Effekt liegt in der Konsole.
          * Viel Spaß beim Hacken!
          */
         
