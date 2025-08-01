@@ -18,6 +18,10 @@
             overflow-x: hidden;
             min-height: 100vh;
             position: relative;
+            /* Flexbox für mittige Platzierung */
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         body::after {
@@ -61,8 +65,11 @@
 
         .main-content {
             display: none;
-            min-height: 100vh;
-            padding: 20px;
+            /* Flexbox für mittige Platzierung entfernt */
+            /* padding: 20px; */
+            min-height: 100vh; /* Muss erhalten bleiben */
+            width: 100%;
+            text-align: center; /* Text in der Mitte */
         }
 
         .music-player {
@@ -120,7 +127,8 @@
 
         .container {
             max-width: 500px;
-            margin: 120px auto 0;
+            /* Zentrierung durch Flexbox in Body */
+            margin: 0 auto;
             text-align: center;
         }
 
@@ -145,8 +153,20 @@
             font-size: 28px;
             font-weight: normal;
             color: #ff3333;
-            margin-bottom: 8px;
+            margin-bottom: 15px; /* Abstand vergrößert */
             letter-spacing: 1px;
+            transition: text-shadow 0.1s ease-in-out;
+            cursor: pointer;
+        }
+
+        .profile-name:hover {
+            animation: glitch 0.5s linear infinite;
+        }
+
+        @keyframes glitch {
+            0% { text-shadow: 1px 0 #ff3333, -1px 0 #00ffff; }
+            50% { text-shadow: -1px 0 #ff3333, 1px 0 #00ffff; }
+            100% { text-shadow: 1px 0 #ff3333, -1px 0 #00ffff; }
         }
 
         .profile-subtitle {
@@ -180,6 +200,7 @@
             background: rgba(50, 50, 50, 0.9);
             border-color: #ff3333;
             transform: translateY(-2px);
+            box-shadow: 0 0 10px #ff3333, 0 0 20px #ff3333;
         }
 
         .social-icon svg {
@@ -189,26 +210,17 @@
 
         @media (max-width: 600px) {
             .container {
-                margin-top: 100px;
-                padding: 0 15px;
+                margin: 0 15px;
             }
             
             .music-player {
-                position: fixed;
                 top: 10px;
                 left: 10px;
-                right: auto;
                 transform: none;
-                justify-content: center;
             }
             
             .profile-name {
                 font-size: 2rem;
-            }
-            
-            .link {
-                padding: 15px 20px;
-                font-size: 1rem;
             }
         }
 
